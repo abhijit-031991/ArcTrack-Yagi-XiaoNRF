@@ -60,6 +60,16 @@ struct resPing{
     uint8_t devtyp;
     bool mortality;
   }__attribute__((__packed__));
+
+  struct lngPngid{
+    uint16_t ta;    
+    uint16_t cnt;
+    uint16_t pid;
+    float la;
+    float ln;
+    uint8_t devtyp;
+    bool mortality;
+  }__attribute__((__packed__));
     
   struct calibrationData{
       float lat;
