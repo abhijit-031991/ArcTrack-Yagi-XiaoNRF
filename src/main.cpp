@@ -221,13 +221,18 @@ void processLoRaPacket() {
     radio.readData((uint8_t*)&r, len);
     Serial.write((uint8_t*)&r, len);
     StaticJsonDocument<128> doc;
-    doc[F("ID")] = r.tag;
+    doc[F("ID")] = r.tag;  
     doc[F("Msg")] = r.resp;
     doc[F("RSSI")] = rssi;
-
     char dat[128];
     serializeJson(doc, dat);
-    pingCharacteristic.notify(dat);
+    if (r.resp == DATA_DOWNLOAD_BEGIN || r.resp == DATA_DOWNLOAD_END || r.resp == DATA_DOWNLOAD_ERROR)
+    {
+      dataCharacteristic.notify(dat);
+    }else{
+      pingCharacteristic.notify(dat);
+    }
+    
     Serial.println(dat);
   }
   // 2. Handle Ping Packet (longPing)
